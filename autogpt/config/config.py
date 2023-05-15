@@ -39,9 +39,6 @@ class Config(metaclass=Singleton):
         self.embedding_tokenizer = os.getenv("EMBEDDING_TOKENIZER", "cl100k_base")
         self.embedding_token_limit = int(os.getenv("EMBEDDING_TOKEN_LIMIT", 8191))
         self.browse_chunk_max_length = int(os.getenv("BROWSE_CHUNK_MAX_LENGTH", 3000))
-        self.browse_spacy_language_model = os.getenv(
-            "BROWSE_SPACY_LANGUAGE_MODEL", "en_core_web_sm"
-        )
 
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
         self.temperature = float(os.getenv("TEMPERATURE", "0"))
@@ -80,24 +77,6 @@ class Config(metaclass=Singleton):
         self.pinecone_api_key = os.getenv("PINECONE_API_KEY")
         self.pinecone_region = os.getenv("PINECONE_ENV")
 
-        self.weaviate_host = os.getenv("WEAVIATE_HOST")
-        self.weaviate_port = os.getenv("WEAVIATE_PORT")
-        self.weaviate_protocol = os.getenv("WEAVIATE_PROTOCOL", "http")
-        self.weaviate_username = os.getenv("WEAVIATE_USERNAME", None)
-        self.weaviate_password = os.getenv("WEAVIATE_PASSWORD", None)
-        self.weaviate_scopes = os.getenv("WEAVIATE_SCOPES", None)
-        self.weaviate_embedded_path = os.getenv("WEAVIATE_EMBEDDED_PATH")
-        self.weaviate_api_key = os.getenv("WEAVIATE_API_KEY", None)
-        self.use_weaviate_embedded = (
-            os.getenv("USE_WEAVIATE_EMBEDDED", "False") == "True"
-        )
-
-        # milvus or zilliz cloud configuration.
-        self.milvus_addr = os.getenv("MILVUS_ADDR", "localhost:19530")
-        self.milvus_username = os.getenv("MILVUS_USERNAME")
-        self.milvus_password = os.getenv("MILVUS_PASSWORD")
-        self.milvus_collection = os.getenv("MILVUS_COLLECTION", "autogpt")
-        self.milvus_secure = os.getenv("MILVUS_SECURE") == "True"
 
         self.image_provider = os.getenv("IMAGE_PROVIDER")
         self.image_size = int(os.getenv("IMAGE_SIZE", 256))
@@ -112,7 +91,7 @@ class Config(metaclass=Singleton):
         self.sd_webui_auth = os.getenv("SD_WEBUI_AUTH")
 
         # Selenium browser settings
-        self.selenium_web_browser = os.getenv("USE_WEB_BROWSER", "chrome")
+        self.selenium_web_browser = os.getenv("USE_WEB_BROWSER", "firefox")
         self.selenium_headless = os.getenv("HEADLESS_BROWSER", "True") == "True"
 
         # User agent header to use when making HTTP requests
@@ -123,15 +102,10 @@ class Config(metaclass=Singleton):
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36"
             " (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
         )
-
-        self.redis_host = os.getenv("REDIS_HOST", "localhost")
-        self.redis_port = os.getenv("REDIS_PORT", "6379")
-        self.redis_password = os.getenv("REDIS_PASSWORD", "")
-        self.wipe_redis_on_start = os.getenv("WIPE_REDIS_ON_START", "True") == "True"
         self.memory_index = os.getenv("MEMORY_INDEX", "auto-gpt")
         # Note that indexes must be created on db 0 in redis, this is not configurable.
 
-        self.memory_backend = os.getenv("MEMORY_BACKEND", "local")
+        self.memory_backend = os.getenv("MEMORY_BACKEND", "pinecone")
 
         self.plugins_dir = os.getenv("PLUGINS_DIR", "plugins")
         self.plugins: List[AutoGPTPluginTemplate] = []

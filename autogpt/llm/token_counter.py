@@ -4,6 +4,7 @@ from __future__ import annotations
 from typing import List
 
 from nltk.tokenize import word_tokenize
+import openai
 from autogpt.llm.base import Message
 from autogpt.logs import logger
 
