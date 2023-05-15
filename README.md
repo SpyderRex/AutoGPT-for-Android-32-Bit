@@ -4,7 +4,7 @@ I do much of my coding on Android, usually using the Termux app. However, there 
 
 Typing commands in the terminal can be buggy at times on this program, but it is manageable.
 
-You need both an OpenAI api key and a Pinecone api key to use the program. The original AutoGPT program has a variety of memory options to choose from, but I am narrowing it down to Pinecone. Pinecone does require numpy, but it can be installed with the command below. The OpenAI models cost a little to use, of course. You can create a free Pinecone account and get your api key. Store your OpenAI api key, your.Pinecone api key, and your Pinecone region in your .bashrc file as environment variables. 
+You need both an OpenAI api key and a Pinecone api key to use the program. The original AutoGPT program has a variety of memory options to choose from, but I am narrowing it down to Pinecone. Pinecone does require numpy, but it can be installed with the command below. The OpenAI models cost a little to use, of course. You can create a free Pinecone account and get your api key. Store your OpenAI api key, your.Pinecone api key, and your Pinecone region in your .bashrc file as environment variables. I would suggest getting a Google api key and Google custom search engine id, since your IP address will most likely be blocked after so much web scraping.
 
 If you are usking Termux, install numpy with:
 ```
@@ -28,6 +28,12 @@ And if you have trouble installing requests, try this first:
 
 ```
 pkg install libxml2-dev libxslt-dev
+```
+
+This version of AutoGPT uses Firefox browser and geckodriver. I did this because Chromedriver doesn't have a 32 bit option, but Firefox and geckodriver do. Make sure you run this command:
+
+```
+pkg install x11-repo firefox geckodriver
 ```
 
 Run the program with:
