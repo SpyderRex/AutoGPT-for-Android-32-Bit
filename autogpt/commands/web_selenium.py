@@ -81,11 +81,7 @@ def scrape_text_with_selenium(url: str) -> tuple[WebDriver, str]:
         EC.presence_of_element_located((By.TAG_NAME, "body"))
     )
 
-    page_source = driver.page_source
-
-    # Remove links from the page source
-    page_source = re.sub(r'\bhttps?:\/\/\S+?\b', '', page_source)
-
+    page_source = driver.execute_script("return document.body.outerHTML;")
     soup = BeautifulSoup(page_source, "html.parser")
 
     for script in soup(["script", "style"]):
@@ -95,7 +91,6 @@ def scrape_text_with_selenium(url: str) -> tuple[WebDriver, str]:
     lines = (line.strip() for line in text.splitlines())
     chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
     text = "\n".join(chunk for chunk in chunks if chunk)
-
     return driver, text
 
 
