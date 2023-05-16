@@ -109,7 +109,7 @@ class Agent:
                 )
                 break
             # Send message to AI, get response
-            with Spinner("Thinking... "):
+            with Spinner("Reasoning... "):
                 assistant_reply = chat_with_ai(
                     self,
                     self.system_prompt,
