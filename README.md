@@ -30,6 +30,12 @@ And if you have trouble installing requests, try this first:
 pkg install libxml2-dev libxslt-dev
 ```
 
+If cryptography gives you trouble, try:
+
+```
+pkg install python-cryptography
+```
+
 This version of AutoGPT uses Firefox browser and geckodriver. I did this because Chromedriver doesn't have a 32 bit option, but Firefox and geckodriver do. Make sure you run this command:
 
 ```

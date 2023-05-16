@@ -20,6 +20,8 @@ jsonschema
 tweepy
 click
 charset-normalizer>=3.1.0
+nltk
+jinja2
 
 ##Dev
 coverage
