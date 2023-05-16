@@ -24,6 +24,7 @@ def google_search(query: str, num_results: int = 8) -> str:
     """
     search_results = []
     if not query:
+
         return json.dumps(search_results)
 
     results = ddg(query, max_results=num_results)

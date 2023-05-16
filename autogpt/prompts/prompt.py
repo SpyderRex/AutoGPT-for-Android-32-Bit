@@ -40,15 +40,7 @@ def build_default_prompt_generator() -> PromptGenerator:
     prompt_generator.add_constraint(
         'Exclusively use the commands listed in double quotes e.g. "command name"'
     )
-
-    # Define the command list
-    commands = [
-        ("Task Complete (Shutdown)", "task_complete", {"reason": "<reason>"}),
-    ]
-
-    # Add commands to the PromptGenerator object
-    for command_label, command_name, args in commands:
-        prompt_generator.add_command(command_label, command_name, args)
+    prompt_generator.add_constraint("Always make your first use of the 'browse_web' command limited to google with the user's question or request as the query in the google search.")
 
     # Add resources to the PromptGenerator object
     prompt_generator.add_resource(
@@ -73,7 +65,7 @@ def build_default_prompt_generator() -> PromptGenerator:
     )
     prompt_generator.add_performance_evaluation(
         "Every command has a cost, so be smart and efficient. Aim to complete tasks in"
-        " the least number of steps."
+        " the least number of steps. For example, always use the 'browse_web' command with the google url and a query relevant to the user's request or question before you use the command with any other url."
     )
     prompt_generator.add_performance_evaluation("Write all code to a file.")
     return prompt_generator

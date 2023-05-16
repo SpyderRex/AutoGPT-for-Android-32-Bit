@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+import re
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -31,7 +32,7 @@ CFG = Config()
     '"url": "<url>", "question": "<what_you_want_to_find_on_website>"',
 )
 @validate_url
-def browse_website(url: str, question: str) -> tuple[str, WebDriver]:
+def browse_website(url: str, question: str) -> str:
     """Browse a website and return the answer and links to the user
 
     Args:
@@ -45,16 +46,17 @@ def browse_website(url: str, question: str) -> tuple[str, WebDriver]:
         driver, text = scrape_text_with_selenium(url)
     except WebDriverException as e:
         msg = e.msg.split("\n")[0]
-        return f"Error: {msg}", None
+        return f"Error: {msg}"
 
     add_header(driver)
     summary_text = summary.summarize_text(url, text, question, driver)
     links = scrape_links_with_selenium(driver, url)
 
     if len(links) > 5:
-        links = links
+        links = links[:5]
     close_browser(driver)
-    return f"Answer gathered from website: {summary_text} \n \n Links: {links}", driver
+    return f"Answer gathered from website: {summary_text} \n \n Links: {links}"
+
 
 
 def scrape_text_with_selenium(url: str) -> tuple[WebDriver, str]:
@@ -80,6 +82,10 @@ def scrape_text_with_selenium(url: str) -> tuple[WebDriver, str]:
     )
 
     page_source = driver.page_source
+
+    # Remove links from the page source
+    page_source = re.sub(r'\bhttps?:\/\/\S+?\b', '', page_source)
+
     soup = BeautifulSoup(page_source, "html.parser")
 
     for script in soup(["script", "style"]):
