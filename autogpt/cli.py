@@ -43,11 +43,6 @@ import click
     help="Dangerous: Allows Auto-GPT to download files natively.",
 )
 @click.option(
-    "--skip-news",
-    is_flag=True,
-    help="Specifies whether to suppress the output of latest news on startup.",
-)
-@click.option(
     # TODO: this is a hidden option for now, necessary for integration testing.
     #   We should make this public once we're ready to roll out agent specific workspaces.
     "--workspace-directory",
@@ -74,7 +69,6 @@ def main(
     memory_type: str,
     browser_name: str,
     allow_downloads: bool,
-    skip_news: bool,
     workspace_directory: str,
     install_plugin_deps: bool,
 ) -> None:
@@ -99,7 +93,6 @@ def main(
             memory_type,
             browser_name,
             allow_downloads,
-            skip_news,
             workspace_directory,
             install_plugin_deps,
         )

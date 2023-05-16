@@ -13,11 +13,7 @@ from autogpt.logs import logger
 from autogpt.memory import get_memory
 from autogpt.plugins import scan_plugins
 from autogpt.prompts.prompt import DEFAULT_TRIGGERING_PROMPT, construct_main_ai_config
-from autogpt.utils import (
-    get_current_git_branch,
-    get_latest_bulletin,
-    markdown_to_ansi_style,
-)
+from autogpt.utils import markdown_to_ansi_style
 from autogpt.workspace import Workspace
 from scripts.install_plugin_deps import install_plugin_dependencies
 
@@ -34,7 +30,6 @@ def run_auto_gpt(
     memory_type: str,
     browser_name: str,
     allow_downloads: bool,
-    skip_news: bool,
     workspace_directory: str,
     install_plugin_deps: bool,
 ):
@@ -56,41 +51,9 @@ def run_auto_gpt(
         gpt4only,
         memory_type,
         browser_name,
-        allow_downloads,
-        skip_news,
+        allow_downloads
     )
 
-    if not cfg.skip_news:
-        motd, is_new_motd = get_latest_bulletin()
-        if motd:
-            motd = markdown_to_ansi_style(motd)
-            for motd_line in motd.split("\n"):
-                logger.info(motd_line, "NEWS:", Fore.GREEN)
-            if is_new_motd and not cfg.chat_messages_enabled:
-                input(
-                    Fore.MAGENTA
-                    + Style.BRIGHT
-                    + "NEWS: Bulletin was updated! Press Enter to continue..."
-                    + Style.RESET_ALL
-                )
-
-        git_branch = get_current_git_branch()
-        if git_branch and git_branch != "stable":
-            logger.typewriter_log(
-                "WARNING: ",
-                Fore.RED,
-                f"You are running on `{git_branch}` branch "
-                "- this is not a supported branch.",
-            )
-        if sys.version_info < (3, 10):
-            logger.typewriter_log(
-                "WARNING: ",
-                Fore.RED,
-                "You are running on an older version of Python. "
-                "Some people have observed problems with certain "
-                "parts of Auto-GPT with this version. "
-                "Please consider upgrading to Python 3.10 or higher.",
-            )
 
     if install_plugin_deps:
         install_plugin_dependencies()

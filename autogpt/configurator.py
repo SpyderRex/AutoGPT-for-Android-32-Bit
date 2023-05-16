@@ -21,8 +21,7 @@ def create_config(
     gpt4only: bool,
     memory_type: str,
     browser_name: str,
-    allow_downloads: bool,
-    skip_news: bool,
+    allow_downloads: bool
 ) -> None:
     """Updates the config object with the given arguments.
 
@@ -38,7 +37,6 @@ def create_config(
         memory_type (str): The type of memory backend to use
         browser_name (str): The name of the browser to use when using selenium to scrape the web
         allow_downloads (bool): Whether to allow Auto-GPT to download files natively
-        skips_news (bool): Whether to suppress the output of latest news on startup
     """
     CFG.set_debug_mode(False)
     CFG.set_continuous_mode(False)
@@ -130,5 +128,3 @@ def create_config(
         )
         CFG.allow_downloads = True
 
-    if skip_news:
-        CFG.skip_news = True
