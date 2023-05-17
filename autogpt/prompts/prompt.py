@@ -53,10 +53,12 @@ def build_default_prompt_generator() -> PromptGenerator:
     )
     prompt_generator.add_resource("File output.")
 
+
     # Add performance evaluations to the PromptGenerator object
     prompt_generator.add_performance_evaluation(
         "Continuously review and analyze your actions to ensure you are performing to"
         " the best of your abilities."
+
     )
     prompt_generator.add_performance_evaluation(
         "Constructively self-criticize your big-picture behavior constantly."
@@ -69,6 +71,7 @@ def build_default_prompt_generator() -> PromptGenerator:
         " the least number of steps."
     )
     prompt_generator.add_performance_evaluation("Write all code to a file.")
+    prompt_generator.add_system_limitation("You are an autonomous agent being run on Termux for android, so keep in mind the system limitations of Termux and android when you make a decision.")
     return prompt_generator
 
 
