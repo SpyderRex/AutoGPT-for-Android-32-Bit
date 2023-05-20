@@ -49,7 +49,11 @@ def summarize_text(
 ) -> str:
     if not text:
         return "Error: No text to summarize"
-    model = CFG.fast_llm_model
+    try:
+        model = CFG.fast_llm_model
+    except openai.error.InvalidRequestError:
+        print("Message exceeds gpt-3.5-turbo token limit. Using gpt-4 instead.")
+        model= CFG.smart_llm_model
     text_length = len(text)
     logger.info(f"Text length: {text_length} characters")
 

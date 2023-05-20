@@ -45,6 +45,7 @@ class ApiManager(metaclass=Singleton):
         if deployment_id is not None:
             response = openai.ChatCompletion.create(
                 deployment_id=deployment_id,
+
                 model=model,
                 messages=messages,
                 temperature=temperature,
@@ -61,15 +62,14 @@ class ApiManager(metaclass=Singleton):
                     api_key=cfg.openai_api_key,
                 )
             except openai.error.InvalidRequestError:
-                print("Message exceeds gpt-3.5-turbo token limit. Using gpt-4 instead.")
+                print("Message exceeds gpt-3.5-turbo token limit. Switching to gpt-4")
                 response = openai.ChatCompletion.create(
-                    model="gpt-4",
+                    model=cfg.smart_llm_model,
                     messages=messages,
                     temperature=temperature,
                     max_tokens=max_tokens,
                     api_key=cfg.openai_api_key,
                 )
-
         logger.debug(f"Response: {response}")
         prompt_tokens = response.usage.prompt_tokens
         completion_tokens = response.usage.completion_tokens
