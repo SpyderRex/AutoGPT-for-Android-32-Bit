@@ -2,11 +2,27 @@
 from __future__ import annotations
 
 from typing import List
-
 from nltk.tokenize import word_tokenize
 import openai
 from autogpt.llm.base import Message
 from autogpt.logs import logger
+import re
+
+
+def preprocess_text(text: str) -> str:
+    # Normalize whitespace
+    text = re.sub(r'\s+', ' ', text)
+
+    # Replace specific characters or sequences with placeholders
+    text = re.sub(r'([^\w\s-])', r' \1 ', text)
+
+    # Separate punctuation from words
+    text = re.sub(r'(\w+)([!"#$%&\'()*+,-./:;<=>?@\[\\\]^_`{|}~])', r'\1 \2 ', text)
+
+    # Separate hyphens that are not part of words
+    text = re.sub(r'(\s-|-\s)', r' - ', text)
+
+    return text
 
 
 def count_message_tokens(
@@ -49,7 +65,8 @@ def count_message_tokens(
     for message in messages:
         num_tokens += tokens_per_message
         for key, value in message.items():
-            num_tokens += len(word_tokenize(value))
+            preprocessed_value = preprocess_text(value)
+            num_tokens += len(word_tokenize(preprocessed_value))
             if key == "name":
                 num_tokens += tokens_per_name
     num_tokens += 3  # every reply is primed with assistant
@@ -67,4 +84,5 @@ def count_string_tokens(string: str, model_name: str) -> int:
     Returns:
         int: The number of tokens in the text string.
     """
-    return len(word_tokenize(string))
+    preprocessed_string = preprocess_text(string)
+    return len(word_tokenize(preprocessed_string))

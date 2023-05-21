@@ -18,6 +18,8 @@ def get_memory(cfg, init=False):
             if init:
                 memory.clear()
         memory = PineconeMemory(cfg)
+        if init:
+            memory.clear()
     return memory
 
 
